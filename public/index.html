@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explore upcoming space events for 2026 — launches, eclipses, meteor showers, and more. Your window to the cosmos.">
+  <title>Cosmos Watch — 2026 Space Events</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Star Canvas Background -->
+  <canvas id="starfield"></canvas>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">
+        <span class="logo-icon">✦</span>
+        <span class="logo-text">Cosmos<span class="logo-accent">Watch</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#featured">Featured</a></li>
+        <li><a href="#events">Events</a></li>
+        <li><a href="#atlas" class="nav-highlight">3I/ATLAS</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <p class="hero-label">🛰️ YOUR WINDOW TO THE COSMOS</p>
+      <h1 class="hero-title">
+        Space Events
+        <span class="hero-year">2026</span>
+      </h1>
+      <p class="hero-subtitle">From crewed lunar missions to total solar eclipses and spectacular meteor showers — track every celestial event that matters.</p>
+      
+      <!-- Countdown to next event -->
+      <div class="countdown-container" id="countdown-container">
+        <p class="countdown-label">Next Event: <span id="countdown-event-name">Loading...</span></p>
+        <div class="countdown-timer" id="countdown-timer">
+          <div class="countdown-block">
+            <span class="countdown-value" id="days">--</span>
+            <span class="countdown-unit">Days</span>
+          </div>
+          <div class="countdown-separator">:</div>
+          <div class="countdown-block">
+            <span class="countdown-value" id="hours">--</span>
+            <span class="countdown-unit">Hours</span>
+          </div>
+          <div class="countdown-separator">:</div>
+          <div class="countdown-block">
+            <span class="countdown-value" id="minutes">--</span>
+            <span class="countdown-unit">Min</span>
+          </div>
+          <div class="countdown-separator">:</div>
+          <div class="countdown-block">
+            <span class="countdown-value" id="seconds">--</span>
+            <span class="countdown-unit">Sec</span>
+          </div>
+        </div>
+      </div>
+
+      <a href="#events" class="hero-cta">Explore Events ↓</a>
+    </div>
+    <div class="hero-glow"></div>
+  </section>
+
+  <!-- Live Stats Counter -->
+  <section class="stats-section">
+    <div class="container">
+      <div class="stats-row scroll-reveal">
+        <div class="stat-item">
+          <span class="stat-number" id="stat-total">0</span>
+          <span class="stat-name">Total Events</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number" id="stat-upcoming">0</span>
+          <span class="stat-name">Upcoming</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number" id="stat-launches">0</span>
+          <span class="stat-name">Launches</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number" id="stat-eclipses">0</span>
+          <span class="stat-name">Eclipses</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Event Section -->
+  <section class="featured-section" id="featured">
+    <div class="container">
+      <h2 class="section-title scroll-reveal">
+        <span class="section-icon">⭐</span>
+        Featured Event
+      </h2>
+      <div class="featured-card scroll-reveal" id="featured-card">
+        <div class="featured-loading">Loading featured event...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Events Section -->
+  <section class="events-section" id="events">
+    <div class="container">
+      <h2 class="section-title scroll-reveal">
+        <span class="section-icon">📅</span>
+        All Space Events
+      </h2>
+
+      <!-- Search & Favorites Bar -->
+      <div class="search-bar scroll-reveal">
+        <div class="search-input-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input" placeholder="Search events by name, agency, or keyword..." autocomplete="off">
+          <button class="search-clear" id="search-clear" title="Clear search">✕</button>
+        </div>
+        <button class="favorites-btn" id="favorites-toggle" title="Show favorites only">
+          <span>❤️</span> Favorites
+        </button>
+      </div>
+
+      <!-- Category Filter -->
+      <div class="filter-tabs" id="filter-tabs">
+        <button class="filter-tab active" data-category="all">
+          <span class="tab-icon">🌌</span> All Events
+        </button>
+        <button class="filter-tab" data-category="launches">
+          <span class="tab-icon">🚀</span> Launches
+        </button>
+        <button class="filter-tab" data-category="eclipses">
+          <span class="tab-icon">🌑</span> Eclipses
+        </button>
+        <button class="filter-tab" data-category="meteor-showers">
+          <span class="tab-icon">☄️</span> Meteor Showers
+        </button>
+      </div>
+
+      <!-- Events Grid -->
+      <div class="events-grid" id="events-grid">
+        <div class="loading-state">
+          <div class="loader"></div>
+          <p>Loading space events...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       3I/ATLAS – INTERSTELLAR COMET RESEARCH SECTION
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="atlas-section" id="atlas">
+    <div class="container">
+      <h2 class="section-title">
+        <span class="section-icon">☄️</span>
+        Comet 3I/ATLAS — Interstellar Visitor
+      </h2>
+      <p class="atlas-subtitle">The third confirmed interstellar object to pass through our solar system</p>
+
+      <!-- Research Paper Header -->
+      <div class="research-paper">
+        <div class="paper-header">
+          <div class="paper-badge">📄 RESEARCH BRIEF</div>
+          <h3 class="paper-title">Comet C/2025 N1 (ATLAS): A Comprehensive Overview of the Third Known Interstellar Object</h3>
+          <div class="paper-authors">
+            <span>Compiled from NASA, ESA, JAXA, CAS & global observatory data</span>
+            <span class="paper-date">Last updated: March 2026</span>
+          </div>
+        </div>
+
+        <!-- Abstract -->
+        <div class="paper-section">
+          <h4 class="paper-section-title">Abstract</h4>
+          <p class="paper-text">
+            Comet 3I/ATLAS (C/2025 N1) is the third confirmed interstellar object to traverse our solar system, following 1I/'Oumuamua (2017) and 2I/Borisov (2019). Discovered on July 1, 2025, by the Asteroid Terrestrial-impact Last Alert System (ATLAS) in Chile, this comet traveled on a hyperbolic trajectory that confirmed its extrasolar origin. Unlike its predecessors, 3I/ATLAS was extensively observed by nearly every major space telescope and planetary mission, yielding unprecedented data about material from another star system. Research published in March 2026 suggests the comet may be <strong>10–12 billion years old</strong> — offering a window into the earliest epochs of the Milky Way galaxy.
+          </p>
+        </div>
+
+        <!-- Key Stats Grid -->
+        <div class="atlas-stats-grid">
+          <div class="atlas-stat">
+            <span class="stat-value">3rd</span>
+            <span class="stat-label">Interstellar Object</span>
+          </div>
+          <div class="atlas-stat">
+            <span class="stat-value">Jul 2025</span>
+            <span class="stat-label">Discovery Date</span>
+          </div>
+          <div class="atlas-stat">
+            <span class="stat-value">1.4 AU</span>
+            <span class="stat-label">Perihelion Distance</span>
+          </div>
+          <div class="atlas-stat">
+            <span class="stat-value">~12 Byr</span>
+            <span class="stat-label">Estimated Age</span>
+          </div>
+        </div>
+
+        <!-- Discovery & Classification -->
+        <div class="paper-section">
+          <h4 class="paper-section-title">1. Discovery & Classification</h4>
+          <p class="paper-text">
+            The comet was initially detected on July 1, 2025, by the ATLAS survey telescope system in Chile. Pre-discovery observations dating back to June 14, 2025, were subsequently recovered from ATLAS facilities and Caltech's Zwicky Transient Facility (ZTF). Orbital analysis confirmed a markedly hyperbolic trajectory (eccentricity > 1), establishing beyond doubt that 3I/ATLAS originated outside our solar system and will never return. It was formally designated C/2025 N1 and given the interstellar prefix "3I" as the third such object catalogued.
+          </p>
+        </div>
+
+        <!-- Trajectory & Timeline -->
+        <div class="paper-section">
+          <h4 class="paper-section-title">2. Orbital Trajectory & Key Encounters</h4>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-date">Jun 14, 2025</div>
+              <div class="timeline-content">
+                <strong>Earliest Pre-Discovery Observation</strong>
+                <p>Recovered from archival ATLAS & ZTF imagery after the official discovery.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">Jul 1, 2025</div>
+              <div class="timeline-content">
+                <strong>Official Discovery</strong>
+                <p>Detected by ATLAS Chile. Hyperbolic orbit immediately flagged for interstellar classification.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">Jul 21, 2025</div>
+              <div class="timeline-content">
+                <strong>Hubble Space Telescope Observation</strong>
+                <p>NASA's HST resolved the comet and provided initial nucleus size estimates.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">Aug 6, 2025</div>
+              <div class="timeline-content">
+                <strong>James Webb Space Telescope (JWST)</strong>
+                <p>JWST infrared spectra revealed the comet is unusually rich in <strong>carbon dioxide (CO₂)</strong> — a key signature of its alien origin.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">Oct 3, 2025</div>
+              <div class="timeline-content">
+                <strong>Mars Flyby — 0.194 AU</strong>
+                <p>Passed within 29 million km of Mars. China's Tianwen-1 orbiter successfully imaged the comet.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">Oct 29, 2025</div>
+              <div class="timeline-content">
+                <strong>Perihelion — Closest to the Sun</strong>
+                <p>Reached 1.4 AU from the Sun (just inside Mars' orbit). Unobservable from Earth as it was behind the Sun.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">Nov 3, 2025</div>
+              <div class="timeline-content">
+                <strong>Venus Flyby — 0.65 AU</strong>
+                <p>Passed 97 million km from Venus while heading outward through the inner solar system.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">Dec 19, 2025</div>
+              <div class="timeline-content">
+                <strong>Closest Approach to Earth — 1.8 AU</strong>
+                <p>The comet's nearest point to Earth at ~270 million km. Posed no danger whatsoever.</p>
+              </div>
+            </div>
+            <div class="timeline-item highlight">
+              <div class="timeline-date">Mar 16, 2026</div>
+              <div class="timeline-content">
+                <strong>Jupiter Close Approach — 0.358 AU</strong>
+                <p>Passed within 53.6 million km of Jupiter — near its Hill sphere — potentially altering the comet's outbound trajectory. ESA's JUICE spacecraft captured images during the encounter.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chemical Composition -->
+        <div class="paper-section">
+          <h4 class="paper-section-title">3. Chemical Composition & Scientific Findings</h4>
+          <p class="paper-text">
+            Multi-wavelength observations have revealed a chemical fingerprint unlike anything in our solar system:
+          </p>
+          <div class="findings-grid">
+            <div class="finding-card">
+              <div class="finding-icon">🧪</div>
+              <h5>High CO₂ Levels</h5>
+              <p>JWST detected abnormally high carbon dioxide concentrations, indicating formation in a colder environment than our own protoplanetary disk.</p>
+            </div>
+            <div class="finding-card">
+              <div class="finding-icon">🍸</div>
+              <h5>Methanol Enrichment</h5>
+              <p>ALMA detected unusually high methanol levels in the expanding gas cloud, suggesting the comet formed in a different, possibly colder planetary system.</p>
+            </div>
+            <div class="finding-card">
+              <div class="finding-icon">💧</div>
+              <h5>Unique Water Release</h5>
+              <p>Shanghai Observatory's Tianma Telescope revealed a secondary sublimation mechanism — significant water vapor came from icy grains in the coma, not just the nucleus.</p>
+            </div>
+            <div class="finding-card">
+              <div class="finding-icon">⏳</div>
+              <h5>10–12 Billion Years Old</h5>
+              <p>March 2026 research suggests the comet is far older than our solar system (4.6 Byr), formed during an earlier era of galactic history.</p>
+            </div>
+            <div class="finding-card">
+              <div class="finding-icon">🔬</div>
+              <h5>22 Anomalies</h5>
+              <p>Scientists have catalogued 22 distinct anomalies in the comet's behavior and composition, fueling ongoing debate about its true nature.</p>
+            </div>
+            <div class="finding-card">
+              <div class="finding-icon">📡</div>
+              <h5>Multi-Mission Coverage</h5>
+              <p>Observed by Hubble, JWST, Parker Solar Probe, MAVEN, Lucy, STEREO, SOHO, JUICE, MRO, and Tianwen-1 — the most-observed interstellar object ever.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Observation Summary Table -->
+        <div class="paper-section">
+          <h4 class="paper-section-title">4. Key Orbital Parameters</h4>
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Parameter</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Designation</td><td>C/2025 N1 (3I/ATLAS)</td></tr>
+                <tr><td>Discovery Date</td><td>July 1, 2025</td></tr>
+                <tr><td>Discovery Telescope</td><td>ATLAS, Chile</td></tr>
+                <tr><td>Orbit Type</td><td>Hyperbolic (e > 1) — Interstellar</td></tr>
+                <tr><td>Perihelion Distance</td><td>1.4 AU (~210 million km)</td></tr>
+                <tr><td>Perihelion Date</td><td>October 29, 2025</td></tr>
+                <tr><td>Closest to Earth</td><td>1.8 AU (~270 million km) — Dec 19, 2025</td></tr>
+                <tr><td>Closest to Mars</td><td>0.194 AU (~29 million km) — Oct 3, 2025</td></tr>
+                <tr><td>Jupiter Approach</td><td>0.358 AU (~53.6 million km) — Mar 16, 2026</td></tr>
+                <tr><td>Current Location</td><td>Constellation Gemini (fading, outbound)</td></tr>
+                <tr><td>Estimated Age</td><td>10–12 billion years</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Further Reading / Resources -->
+        <div class="paper-section">
+          <h4 class="paper-section-title">5. Further Reading & Official Resources</h4>
+          <p class="paper-text">For deeper exploration, visit these authoritative sources:</p>
+          <div class="resources-grid">
+            <a href="https://science.nasa.gov/solar-system/comets/3i-atlas/" target="_blank" rel="noopener noreferrer" class="resource-link">
+              <div class="resource-icon">🚀</div>
+              <div class="resource-info">
+                <strong>NASA — 3I/ATLAS Overview</strong>
+                <span>Official mission page with latest findings and images</span>
+              </div>
+              <span class="resource-arrow">→</span>
+            </a>
+            <a href="https://www.esa.int/" target="_blank" rel="noopener noreferrer" class="resource-link">
+              <div class="resource-icon">🛰️</div>
+              <div class="resource-info">
+                <strong>ESA — European Space Agency</strong>
+                <span>JUICE observations and European science contributions</span>
+              </div>
+              <span class="resource-arrow">→</span>
+            </a>
+            <a href="https://en.wikipedia.org/wiki/C/2025_N1_(ATLAS)" target="_blank" rel="noopener noreferrer" class="resource-link">
+              <div class="resource-icon">📖</div>
+              <div class="resource-info">
+                <strong>Wikipedia — C/2025 N1 (ATLAS)</strong>
+                <span>Comprehensive article with orbital data and references</span>
+              </div>
+              <span class="resource-arrow">→</span>
+            </a>
+            <a href="https://www.space.com/" target="_blank" rel="noopener noreferrer" class="resource-link">
+              <div class="resource-icon">🌌</div>
+              <div class="resource-info">
+                <strong>Space.com — Latest News</strong>
+                <span>Breaking stories and analysis on 3I/ATLAS discoveries</span>
+              </div>
+              <span class="resource-arrow">→</span>
+            </a>
+            <a href="https://earthsky.org/" target="_blank" rel="noopener noreferrer" class="resource-link">
+              <div class="resource-icon">🌍</div>
+              <div class="resource-info">
+                <strong>EarthSky — Observing Guide</strong>
+                <span>Where and how to spot 3I/ATLAS in the night sky</span>
+              </div>
+              <span class="resource-arrow">→</span>
+            </a>
+            <a href="https://theskylive.com/3iatlas-info" target="_blank" rel="noopener noreferrer" class="resource-link">
+              <div class="resource-icon">🔭</div>
+              <div class="resource-info">
+                <strong>TheSkyLive — Live Tracking</strong>
+                <span>Real-time position, ephemeris, and visibility data</span>
+              </div>
+              <span class="resource-arrow">→</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Paper Footer -->
+        <div class="paper-footer">
+          <p>This brief was compiled from publicly available data published by NASA, ESA, JAXA, the Chinese Academy of Sciences, and peer-reviewed astronomical journals. For citation purposes, refer to original agency publications.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about-section" id="about">
+    <div class="container">
+      <h2 class="section-title">
+        <span class="section-icon">🔭</span>
+        About Cosmos Watch
+      </h2>
+      <div class="about-grid">
+        <div class="about-card">
+          <div class="about-icon">🛰️</div>
+          <h3>Real-Time Data</h3>
+          <p>Events sourced from NASA, ESA, ISRO, CNSA and other space agencies worldwide.</p>
+        </div>
+        <div class="about-card">
+          <div class="about-icon">⏱️</div>
+          <h3>Live Countdowns</h3>
+          <p>Never miss a launch or celestial event with our real-time countdown timers.</p>
+        </div>
+        <div class="about-card">
+          <div class="about-icon">🌍</div>
+          <h3>Global Coverage</h3>
+          <p>Tracking missions, eclipses, and meteor showers visible from around the world.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <span class="logo-icon">✦</span>
+          <span class="logo-text">Cosmos<span class="logo-accent">Watch</span></span>
+        </div>
+        <p class="footer-text">Tracking humanity's journey to the stars. Data sourced from NASA, ESA, and international space agencies.</p>
+        <p class="footer-copy">© 2026 CosmosWatch. Built with ❤️ for space enthusiasts.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Event Detail Modal -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="event-modal">
+      <button class="modal-close" id="modal-close">✕</button>
+      <div class="modal-content" id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="back-to-top" title="Back to top">
+    <span>↑</span>
+  </button>
+
+  <script src="script.js"></script>
+</body>
+</html>
